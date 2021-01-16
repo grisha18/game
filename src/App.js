@@ -23,19 +23,45 @@ class Game extends React.Component{
     super(props);
     this.state = {
       squares: Array(9).fill(null),
-      count: 0
+      count: 0,
+      didWeWin: false
     }
 
   }
 
 clickHandler = event => {
-  let data = event.target.getAttribute('data');
-  let currentSquares = this.state.squares;
+  const  data = event.target.getAttribute('data');
+  const  currentSquares = this.state.squares;
   console.log(currentSquares);
-  currentSquares[data] = 1;
+  const wins = [ [0,1,2], [3,4,5], [6,7,8], [0,3,6], [1,4,7], [2,5,8], [0,4,8], [2,4,6] ]
+  let didWeWin = false;
+
+  if(this.state.didWeWin)
+    return;
+
+  if(currentSquares[data] != null){
+    return
+  }
+
   currentSquares[data] = (this.state.count % 2 === 0) ? 'X' : 'O';
+
+  wins.forEach(e =>{
+    if( currentSquares[e[0]] && currentSquares[e[1]] && currentSquares[e[2]] ){
+      if( (currentSquares[e[0]] === currentSquares[e[1]] ) && (currentSquares[e[1]] === currentSquares[e[2]]) ){
+        console.log('pobeda')
+        didWeWin = true;
+      }
+
+    }
+    
+  }) 
+  
+
   this.setState( {count: this.state.count + 1 });
-  this.setState({squares: currentSquares});  
+  this.setState({squares: currentSquares});
+  this.setState({didWeWin: didWeWin});
+    
+  
 }
 
 
